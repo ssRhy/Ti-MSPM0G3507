@@ -69,3 +69,14 @@ void TT_Moto2(uint8_t *dir, uint32_t *pwm)
     //设置比较值（决定占空比是多少）
     DL_TimerG_setCaptureCompareValue(TB6612_PWM_INST, *pwm, GPIO_TB6612_PWM_C1_IDX);
 }
+
+void SetSpeed(float speed1, float speed2)
+{
+    g_pwm1 = (uint32_t)(speed1 / 3.0f * MAX_PWM);
+    g_pwm2 = (uint32_t)(speed2 / 3.0f * MAX_PWM);
+    TT_Moto1(&g_dir1, &g_pwm1);
+    TT_Moto2(&g_dir2, &g_pwm2);
+} 
+
+
+

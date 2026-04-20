@@ -19,3 +19,4 @@ extern uint32_t g_pwm2;
 
 void TT_Moto1(uint8_t *dir, uint32_t *pwm);
 void TT_Moto2(uint8_t *dir, uint32_t *pwm);
+void SetSpeed(float speed1, float speed2);

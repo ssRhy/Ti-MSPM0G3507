@@ -114,6 +114,22 @@ extern "C" {
 /* Defines for BIN2: GPIOB.16 with pinCMx 33 on package pin 4 */
 #define TB6612_IO_BIN2_PIN                                      (DL_GPIO_PIN_16)
 #define TB6612_IO_BIN2_IOMUX                                     (IOMUX_PINCM33)
+/* Defines for HW_OUT_1: GPIOA.8 with pinCMx 19 on package pin 54 */
+#define GRAPH_SENSOR_HW_OUT_1_PORT                                       (GPIOA)
+#define GRAPH_SENSOR_HW_OUT_1_PIN                                (DL_GPIO_PIN_8)
+#define GRAPH_SENSOR_HW_OUT_1_IOMUX                              (IOMUX_PINCM19)
+/* Defines for HW_OUT_2: GPIOA.26 with pinCMx 59 on package pin 30 */
+#define GRAPH_SENSOR_HW_OUT_2_PORT                                       (GPIOA)
+#define GRAPH_SENSOR_HW_OUT_2_PIN                               (DL_GPIO_PIN_26)
+#define GRAPH_SENSOR_HW_OUT_2_IOMUX                              (IOMUX_PINCM59)
+/* Defines for HW_OUT_3: GPIOB.24 with pinCMx 52 on package pin 23 */
+#define GRAPH_SENSOR_HW_OUT_3_PORT                                       (GPIOB)
+#define GRAPH_SENSOR_HW_OUT_3_PIN                               (DL_GPIO_PIN_24)
+#define GRAPH_SENSOR_HW_OUT_3_IOMUX                              (IOMUX_PINCM52)
+/* Defines for HW_OUT_4: GPIOB.9 with pinCMx 26 on package pin 61 */
+#define GRAPH_SENSOR_HW_OUT_4_PORT                                       (GPIOB)
+#define GRAPH_SENSOR_HW_OUT_4_PIN                                (DL_GPIO_PIN_9)
+#define GRAPH_SENSOR_HW_OUT_4_IOMUX                              (IOMUX_PINCM26)
 
 
 /* clang-format on */

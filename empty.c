@@ -1,45 +1,60 @@
-/*
- * Copyright (c) 2021, Texas Instruments Incorporated
- * All rights reserved.
- *
- */
-
- /******************** (C) COPYRIGHT 2025   B站：电子大师兄 ****************************
-* 文件名    : empty.c
-* 作者      : 电子大师兄（https://space.bilibili.com/568487373）
-* 版本      : V1.0
-* 时间      : 2025-6-6
-* 描述      : 主逻辑文件
-*******************************************************************************/
-
-
-
-/*******************************************************************************
-* 函数名 : TT_Moto2
-* 描述    : TT电机控制函数
-* 作者    : 电子大师兄
-* 输入    : dir=0，停止；dir=1，正转；dir=2，反转
-*           pwm，取值范围0~3200，对应占空比0%~100%，对应转速从0到最大值
-* 输出    : None
-* 返回    : None
-*******************************************************************************/
 #include "ti_msp_dl_config.h"
+#include "graph.h"
 #include "Motor/motor.h"
-
-
 
 int main(void)
 {
+    /* 1. 初始化系统时钟和外设（必须最先调用） */
     SYSCFG_DL_init();
+  
 
-    //启动定时器G0
+    /* 2. 启动电机PWM定时器 */
     DL_TimerG_startCounter(TB6612_PWM_INST);
 
+    /* 3. 初始化灰度传感器 */
+    GRAPH_SENSOR_Init();
+
     while (1) {
-          //TT电机控制函数，控制电机的方向由g_dir决定，控制电机的转速由g_pwm决定
-          TT_Moto1(&g_dir1,&g_pwm1); 
-          TT_Moto2(&g_dir2,&g_pwm2); 
-          //延时1秒
-          delay_cycles(CPUCLK_FREQ);
+        /* 4. 控制电机（g_dir1/g_pwm1等变量需在motor.h中定义） */
+    //   if(READ_HW_OUT_4==1)
+    //   {
+    //      TT_Moto1(&g_dir1, &g_pwm1);
+    //    TT_Moto2(&g_dir2, &g_pwm2);
+
+    //   }
+      
+
+        /* 5. 读取4路灰度传感器状态 */
+        uint8_t s1 = READ_HW_OUT_1;
+        uint8_t s2 = READ_HW_OUT_2;
+        uint8_t s3 = READ_HW_OUT_3;
+        uint8_t s4 = READ_HW_OUT_4;
+        if(READ_HW_OUT_1 == 0&&READ_HW_OUT_2 == 0&&READ_HW_OUT_3 == 0&&READ_HW_OUT_4 == 0 )
+        {
+            SetSpeed(1,1);
+        }
+        if(READ_HW_OUT_1 == 0&&READ_HW_OUT_2 == 1&&READ_HW_OUT_3 == 0&&READ_HW_OUT_4 == 0 )
+        {
+            SetSpeed(0.5,2);
+        }
+        if(READ_HW_OUT_1 == 1&&READ_HW_OUT_2 == 0&&READ_HW_OUT_3 == 0&&READ_HW_OUT_4 == 0 )
+        {
+        
+            SetSpeed(0.5,2.5);
+        }
+        if(READ_HW_OUT_1 == 0&&READ_HW_OUT_2 == 0&&READ_HW_OUT_3 == 1&&READ_HW_OUT_4 == 0 )
+        {
+        
+            SetSpeed(2,0.5);
+        }
+        if(READ_HW_OUT_1 == 0&&READ_HW_OUT_2 == 0&&READ_HW_OUT_3 == 0&&READ_HW_OUT_4 == 1 )
+        {
+    
+            SetSpeed(2.5,0.5);
+        }
+    
+
+        /* 6. 延时1秒（可根据需要调整） */
+        delay_cycles(CPUCLK_FREQ);
     }
 }
