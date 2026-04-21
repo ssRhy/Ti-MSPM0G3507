@@ -1,9 +1,9 @@
 #include "motor.h"
 
-uint8_t g_dir1 = DIR_FORWARD;
+uint8_t g_dir1 =DIR_BACKWARD;
 uint32_t g_pwm1 = 1600;
 
-uint8_t g_dir2 = DIR_FORWARD;
+uint8_t g_dir2 = DIR_BACKWARD;
 uint32_t g_pwm2 = 1600;
 
 

@@ -25,36 +25,49 @@ int main(void)
       
 
         /* 5. 读取4路灰度传感器状态 */
-        uint8_t s1 = READ_HW_OUT_1;
-        uint8_t s2 = READ_HW_OUT_2;
-        uint8_t s3 = READ_HW_OUT_3;
-        uint8_t s4 = READ_HW_OUT_4;
-        if(READ_HW_OUT_1 == 0&&READ_HW_OUT_2 == 0&&READ_HW_OUT_3 == 0&&READ_HW_OUT_4 == 0 )
+        uint8_t s1 = !READ_HW_OUT_1;
+        uint8_t s2 = !READ_HW_OUT_2;
+        uint8_t s3 = !READ_HW_OUT_3;
+        uint8_t s4 = !READ_HW_OUT_4;
+        if(s1 == 1 && s2 == 1 && s3 == 1 && s4 == 1)
         {
-            SetSpeed(1,1);
+            SetSpeed(0, 0);
         }
-        if(READ_HW_OUT_1 == 0&&READ_HW_OUT_2 == 1&&READ_HW_OUT_3 == 0&&READ_HW_OUT_4 == 0 )
+        else if(s1 == 1 && s2 == 0 && s3 == 1 && s4 == 1)
         {
-            SetSpeed(0.5,2);
+            SetSpeed(0.5, 2);
         }
-        if(READ_HW_OUT_1 == 1&&READ_HW_OUT_2 == 0&&READ_HW_OUT_3 == 0&&READ_HW_OUT_4 == 0 )
+        else if(s1 == 0 && s2 == 1 && s3 == 1 && s4 == 1)
         {
-        
-            SetSpeed(0.5,2.5);
+            SetSpeed(0.5, 2.5);
         }
-        if(READ_HW_OUT_1 == 0&&READ_HW_OUT_2 == 0&&READ_HW_OUT_3 == 1&&READ_HW_OUT_4 == 0 )
+        else if(s1 == 1 && s2 == 1 && s3 == 0 && s4 == 1)
         {
-        
-            SetSpeed(2,0.5);
+            SetSpeed(2, 0.5);
         }
-        if(READ_HW_OUT_1 == 0&&READ_HW_OUT_2 == 0&&READ_HW_OUT_3 == 0&&READ_HW_OUT_4 == 1 )
+        else if(s1 == 1 && s2 == 1 && s3 == 1 && s4 == 0)
         {
-    
-            SetSpeed(2.5,0.5);
+            SetSpeed(2.5, 0.5);
         }
+        else if(s1 == 0 && s2 == 0 && s3 == 0 && s4 == 0)
+        {
+            SetSpeed(1, 1);
+        }
+        else
+        {
+            // 未精确匹配任何条件时，直行（防止电机停止）
+            SetSpeed(1, 1);
+        }
+
+
+        // 调试：直接读取原始传感器值
+    // if (!READ_HW_OUT_1 == 0) { SetSpeed(0.5, 2.5); }  // 左转
+    // else { SetSpeed(2.5, 0.5); }  // 右转
+            // if(READ_HW_OUT_3==1)
+        // {
+        //     SetSpeed(1.5,1.5);
+        // }
     
 
-        /* 6. 延时1秒（可根据需要调整） */
-        delay_cycles(CPUCLK_FREQ);
     }
 }
