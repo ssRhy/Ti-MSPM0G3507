@@ -1,6 +1,7 @@
 # FIXED
 
-empty.o: ../empty.c \
+Encoder/Encoder.o: ../Encoder/Encoder.c \
+ D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/Encoder/Encoder.h \
  ti_msp_dl_config.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h \
@@ -83,9 +84,8 @@ empty.o: ../empty.c \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h \
- C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h \
- D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/GRAPH/graph.h \
- ../Motor/motor.h ../Encoder/Encoder.h
+ C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h
+D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/Encoder/Encoder.h:
 ti_msp_dl_config.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h:
@@ -169,6 +169,3 @@ C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h:
-D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/GRAPH/graph.h:
-../Motor/motor.h:
-../Encoder/Encoder.h:
