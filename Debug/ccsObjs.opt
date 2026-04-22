@@ -5,6 +5,7 @@
 "./GRAPH/graph.o"
 "./Motor/motor.o"
 "./PID/pid.o"
+"./Uart/fifo.o"
 "./Uart/uart.o"
 "./clock/clock.o"
 -l"./device_linker.cmd"

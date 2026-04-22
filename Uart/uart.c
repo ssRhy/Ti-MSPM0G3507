@@ -21,13 +21,9 @@ void Uartinit(void)
 
 void uart0_send_char(char ch)
 {
-    volatile uint32_t count = 5000;
-    while (count-- > 0) {
-        if (DL_UART_isTXFIFOEmpty(UART_0_INST)) {
-            DL_UART_Main_transmitData(UART_0_INST, ch);
-            return;
-        }
+    while (DL_UART_isTXFIFOFull(UART_0_INST)) {
     }
+    DL_UART_Main_transmitData(UART_0_INST, ch);
 }
 
 void uart0_send_string(const char* str)

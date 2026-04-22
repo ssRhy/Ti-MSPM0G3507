@@ -5,22 +5,22 @@
 #include "Encoder/Encoder.h"
 #include "clock/clock.h"
 
-volatile uint32_t g_uart_tx_ticks  = 0;
-volatile uint32_t g_measure_ticks  = 0;
 
 int main(void)
 {
     SYSCFG_DL_init();
+    uart0_send_string("\r\n===== BOOT START =====\r\n");
+    for (volatile uint32_t w = 0; w < 1000000; w++) {}//test
     uart0_send_string("[1] SYSCFG done\r\n");
 
-    delay_cycles(1000);
+    delay_cycles(100000);
     uart0_send_string("[2] delay done\r\n");
 
     Uartinit();
     uart0_send_string("[3] Uartinit done\r\n");
 
     volatile uint32_t d = 0;
-    for (d = 0; d < 100000; d++) {}
+    for (d = 0; d < 1000000; d++) {}
     uart0_send_string("[4] post-init delay done\r\n");
 
     GRAPH_SENSOR_Init();
@@ -29,13 +29,19 @@ int main(void)
     uart0_send_string("[6] NVIC enabled\r\n");
     SysTick_Init();
     uart0_send_string("[7] SysTick started\r\n");
+    uart0_send_string("===== BOOT END =====\r\n");
 
     while (1) {
-        // if (atomic_take_and_clear(&g_measure_ticks) > 0) {
-        //     MEASURE_MOTORS_SPEED();
-        // }
+        static uint32_t last_measure = 0;
+        static uint32_t last_uart = 0;
+        uint32_t now = tick_ms;
 
-        // if (atomic_take_and_clear(&g_uart_tx_ticks) >= 5) {
+        if (now - last_measure >= 20) {
+            MEASURE_MOTORS_SPEED();
+            last_measure = now;
+        }
+
+        if (now - last_uart >= 100) {
             uart0_send_string("TICK:");
             uart0_send_speed((float)tick_ms);
             uart0_send_string(" M1:");
@@ -43,7 +49,8 @@ int main(void)
             uart0_send_string(" M2:");
             uart0_send_speed(Motor2_Speed);
             uart0_send_string("\r\n");
-        // }
+            last_uart = now;
+        }
 
         uint8_t s1 = !READ_HW_OUT_1;
         uint8_t s2 = !READ_HW_OUT_2;
