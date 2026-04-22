@@ -1,3 +1,4 @@
+#include "ti/driverlib/dl_timerg.h"
 #include "ti_msp_dl_config.h"
 #include "graph.h"
 #include "Motor/motor.h"
@@ -27,21 +28,23 @@ int main(void)
     uart0_send_string("[5] GRAPH done\r\n");
 
     uart0_send_string("[6] NVIC enabled\r\n");
-    SysTick_Init();
+    NVIC_EnableIRQ(GPIOB_INT_IRQn);//使能编码器中断
+    SysTick_Init();//使能系统滴答定时器
     uart0_send_string("[7] SysTick started\r\n");
+    DL_TimerG_startCounter(TB6612_PWM_INST);//开启pwm电机
     uart0_send_string("===== BOOT END =====\r\n");
 
     while (1) {
         static uint32_t last_measure = 0;
         static uint32_t last_uart = 0;
         uint32_t now = tick_ms;
-
-        if (now - last_measure >= 20) {
+//encoder 采样 ms 窗口内的脉冲数
+        if (now - last_measure >= 200) {
             MEASURE_MOTORS_SPEED();
             last_measure = now;
         }
 
-        if (now - last_uart >= 100) {
+        if (now - last_uart >= 500) {
             uart0_send_string("TICK:");
             uart0_send_speed((float)tick_ms);
             uart0_send_string(" M1:");
@@ -52,23 +55,24 @@ int main(void)
             last_uart = now;
         }
 
-        uint8_t s1 = !READ_HW_OUT_1;
-        uint8_t s2 = !READ_HW_OUT_2;
-        uint8_t s3 = !READ_HW_OUT_3;
-        uint8_t s4 = !READ_HW_OUT_4;
+        SetSpeed(2, 2);
+        // uint8_t s1 = !READ_HW_OUT_1;
+        // uint8_t s2 = !READ_HW_OUT_2;
+        // uint8_t s3 = !READ_HW_OUT_3;
+        // uint8_t s4 = !READ_HW_OUT_4;
 
-        if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 1) {
-            SetSpeed(0, 0);
-        } else if (s1 == 1 && s2 == 0 && s3 == 1 && s4 == 1) {
-            SetSpeed(0.5, 2);
-        } else if (s1 == 0 && s2 == 1 && s3 == 1 && s4 == 1) {
-            SetSpeed(0.5, 2.5);
-        } else if (s1 == 1 && s2 == 1 && s3 == 0 && s4 == 1) {
-            SetSpeed(2, 0.5);
-        } else if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 0) {
-            SetSpeed(2.5, 0.5);
-        } else {
-            SetSpeed(1, 1);
-        }
+        // if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 1) {
+        //     SetSpeed(0, 0);
+        // } else if (s1 == 1 && s2 == 0 && s3 == 1 && s4 == 1) {
+        //     SetSpeed(0.5, 2);
+        // } else if (s1 == 0 && s2 == 1 && s3 == 1 && s4 == 1) {
+        //     SetSpeed(0.5, 2.5);
+        // } else if (s1 == 1 && s2 == 1 && s3 == 0 && s4 == 1) {
+        //     SetSpeed(2, 0.5);
+        // } else if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 0) {
+        //     SetSpeed(2.5, 0.5);
+        // } else {
+        //     SetSpeed(1, 1);
+        // }
     }
 }

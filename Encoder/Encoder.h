@@ -12,6 +12,10 @@
 #define Encoder_D_PIN        DL_GPIO_PIN_19   // GPIOB.19，右轮 B 相
 
 // === 电机物理参数（请根据实际情况修改） ===
+
+
+
+
 #define ENCODE_13X   11      // 编码器线数（每转脉冲数）
 #define JIANSUBI     9.6      // 减速比（如 20:1 减速箱）
 #define BEIPIN       4       // 4倍频（软件四分频）
@@ -19,7 +23,7 @@
 #define SAMPLE_TIME  0.01    // 速度采样周期，单位秒
 
 #define PI  3.1415f
-#define RR  12.5f            // 轮子半径，单位 cm
+#define RR  12.5f            // 轮子半径，单位 mm
 
 // === 读取编码器引脚状态（返回 0=高电平，1=低电平） ===
 #define Read_Encoder_A   (DL_GPIO_readPins(Encoder_PORT,Encoder_A_PIN)==Encoder_A_PIN)?0:1  // 左轮 A相

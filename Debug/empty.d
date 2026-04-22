@@ -1,7 +1,8 @@
 # FIXED
 
 empty.o: ../empty.c \
- ti_msp_dl_config.h \
+ C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timerg.h \
+ C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timer.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/m0p/mspm0g350x.h \
@@ -32,9 +33,10 @@ empty.o: ../empty.c \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/peripherals/m0p/hw_debugss.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/peripherals/m0p/hw_sysctl.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/peripherals/m0p/sysctl/hw_sysctl_mspm0g1x0x_g3x0x.h \
+ C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_common.h \
+ ti_msp_dl_config.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/driverlib.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_adc12.h \
- C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_common.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_factoryregion.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_core.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_aes.h \
@@ -68,9 +70,7 @@ empty.o: ../empty.c \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_spi.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_tamperio.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timera.h \
- C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timer.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timerb.h \
- C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timerg.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_trng.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_uart_extend.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_uart.h \
@@ -86,7 +86,8 @@ empty.o: ../empty.c \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h \
  D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/GRAPH/graph.h \
  ../Motor/motor.h ../Uart/uart.h ../Encoder/Encoder.h ../clock/clock.h
-ti_msp_dl_config.h:
+C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timerg.h:
+C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timer.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/m0p/mspm0g350x.h:
@@ -117,9 +118,10 @@ C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/peripherals/m0p/hw_cpuss.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/peripherals/m0p/hw_debugss.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/peripherals/m0p/hw_sysctl.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/peripherals/m0p/sysctl/hw_sysctl_mspm0g1x0x_g3x0x.h:
+C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_common.h:
+ti_msp_dl_config.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/driverlib.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_adc12.h:
-C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_common.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_factoryregion.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_core.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_aes.h:
@@ -153,9 +155,7 @@ C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_spgss.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_spi.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_tamperio.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timera.h:
-C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timer.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timerb.h:
-C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timerg.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_trng.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_uart_extend.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_uart.h:

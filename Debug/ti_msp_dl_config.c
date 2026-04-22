@@ -178,7 +178,7 @@ static const DL_TimerG_PWMConfig gTB6612_PWMConfig = {
     .pwmMode = DL_TIMER_PWM_MODE_EDGE_ALIGN_UP,
     .period = 3200,
     .isTimerWithFourCC = false,
-    .startTimer = DL_TIMER_STOP,
+    .startTimer = DL_TIMER_START,
 };
 
 SYSCONFIG_WEAK void SYSCFG_DL_TB6612_PWM_init(void) {
