@@ -32,15 +32,7 @@ int main(void)
         }
 
         if (now - last_uart >= 500) {
-            uart0_send_string("TICK:");
-            uart0_send_speed((float)tick_ms);
-            uart0_send_string(" M1:");
-            uart0_send_speed(Motor1_Speed);
-            uart0_send_string(" M2:");
-            uart0_send_speed(Motor2_Speed);
-            uart0_send_string(" OUT:");
-            uart0_send_speed(pid_motor1.output);  
-            uart0_send_string("\r\n");
+            uart0_send_vofa();
             last_uart = now;
         }
 

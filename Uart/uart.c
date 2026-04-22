@@ -1,5 +1,7 @@
 #include "ti_msp_dl_config.h"
 #include "uart.h"
+#include "Motor/motor.h"
+#include "Encoder/Encoder.h"
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -51,6 +53,53 @@ void uart0_send_speed(float speed)
     buf[6] = '\0';
 
     uart0_send_string(buf);
+}
+
+void uart0_send_float(float val)
+{
+    if (val < 0) {
+        uart0_send_char('-');
+        val = -val;
+    }
+
+    uint32_t int_part = (uint32_t)val;
+    uint32_t frac_part = (uint32_t)((val - int_part) * 1000.0f);
+
+    char buf[16];
+    int pos = 0;
+
+    if (int_part == 0) {
+        buf[pos++] = '0';
+    } else {
+        char tmp[12];
+        int digits = 0;
+        while (int_part > 0) {
+            tmp[digits++] = '0' + int_part % 10;
+            int_part /= 10;
+        }
+        for (int i = digits - 1; i >= 0; i--) {
+            buf[pos++] = tmp[i];
+        }
+    }
+
+    buf[pos++] = '.';
+    buf[pos++] = '0' + (frac_part / 100) % 10;
+    buf[pos++] = '0' + (frac_part / 10) % 10;
+    buf[pos++] = '0' + frac_part % 10;
+    buf[pos] = '\0';
+
+    uart0_send_string(buf);
+}
+
+void uart0_send_vofa(void)
+{
+    // FireWater 格式: ch0,ch1,ch2\n
+    uart0_send_float(Motor1_Speed);
+    uart0_send_char(',');
+    uart0_send_float(Motor2_Speed);
+    uart0_send_char(',');
+    uart0_send_float(pid_motor1.output );
+    uart0_send_char('\n');
 }
 
 void UART0_IRQHandler(void)
