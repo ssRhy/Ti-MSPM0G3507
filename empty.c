@@ -10,29 +10,15 @@
 int main(void)
 {
     SYSCFG_DL_init();
-    uart0_send_string("\r\n===== BOOT START =====\r\n");
-    for (volatile uint32_t w = 0; w < 1000000; w++) {}//test
-    uart0_send_string("[1] SYSCFG done\r\n");
+    Motor_Init();//初始化电机
 
     delay_cycles(100000);
-    uart0_send_string("[2] delay done\r\n");
-
     Uartinit();
-    uart0_send_string("[3] Uartinit done\r\n");
-
-    volatile uint32_t d = 0;
-    for (d = 0; d < 1000000; d++) {}
-    uart0_send_string("[4] post-init delay done\r\n");
-
     GRAPH_SENSOR_Init();
-    uart0_send_string("[5] GRAPH done\r\n");
-
-    uart0_send_string("[6] NVIC enabled\r\n");
     NVIC_EnableIRQ(GPIOB_INT_IRQn);//使能编码器中断
     SysTick_Init();//使能系统滴答定时器
-    uart0_send_string("[7] SysTick started\r\n");
     DL_TimerG_startCounter(TB6612_PWM_INST);//开启pwm电机
-    uart0_send_string("===== BOOT END =====\r\n");
+
 
     while (1) {
         static uint32_t last_measure = 0;
@@ -41,6 +27,7 @@ int main(void)
 //encoder 采样 ms 窗口内的脉冲数
         if (now - last_measure >= 200) {
             MEASURE_MOTORS_SPEED();
+            SetSpeed(2, 2);  //设置速度
             last_measure = now;
         }
 
@@ -51,6 +38,8 @@ int main(void)
             uart0_send_speed(Motor1_Speed);
             uart0_send_string(" M2:");
             uart0_send_speed(Motor2_Speed);
+            uart0_send_string(" OUT:");
+            uart0_send_speed(pid_motor1.output);  
             uart0_send_string("\r\n");
             last_uart = now;
         }

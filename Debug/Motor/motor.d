@@ -83,7 +83,9 @@ Motor/motor.o: ../Motor/motor.c ../Motor/motor.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h \
- C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h
+ C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h \
+ D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/PID/pid.h \
+ D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/Encoder/Encoder.h
 ../Motor/motor.h:
 ti_msp_dl_config.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h:
@@ -168,3 +170,5 @@ C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h:
+D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/PID/pid.h:
+D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/Encoder/Encoder.h:

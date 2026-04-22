@@ -1,4 +1,5 @@
 #include "ti_msp_dl_config.h"
+#include "PID/pid.h"
 
 //MSPM0G3507
 //参数配置：时钟32Mhz，预分频1，周期3200
@@ -16,7 +17,10 @@ extern uint8_t g_dir1;
 extern uint32_t g_pwm1;
 extern uint8_t g_dir2;
 extern uint32_t g_pwm2;
+extern PID_TypeDef pid_motor1;
+extern PID_TypeDef pid_motor2;
 
 void TT_Moto1(uint8_t *dir, uint32_t *pwm);
 void TT_Moto2(uint8_t *dir, uint32_t *pwm);
 void SetSpeed(float speed1, float speed2);
+void Motor_Init(void);

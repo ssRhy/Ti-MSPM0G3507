@@ -85,7 +85,9 @@ empty.o: ../empty.c \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h \
  C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h \
  D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/GRAPH/graph.h \
- ../Motor/motor.h ../Uart/uart.h ../Encoder/Encoder.h ../clock/clock.h
+ ../Motor/motor.h \
+ D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/PID/pid.h \
+ ../Uart/uart.h ../Encoder/Encoder.h ../clock/clock.h
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timerg.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_timer.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h:
@@ -171,6 +173,7 @@ C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h:
 C:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h:
 D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/GRAPH/graph.h:
 ../Motor/motor.h:
+D:/Study/DianSai/TTSourceCode/M0G3507_TB6612_TT2/PID/pid.h:
 ../Uart/uart.h:
 ../Encoder/Encoder.h:
 ../clock/clock.h:
