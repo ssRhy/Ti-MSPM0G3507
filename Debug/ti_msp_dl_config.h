@@ -173,6 +173,8 @@ extern "C" {
 #define Encoder_PORT_Encoder_D_PIN_IOMUX                         (IOMUX_PINCM45)
 
 
+
+
 /* clang-format on */
 
 void SYSCFG_DL_init(void);
@@ -182,6 +184,7 @@ void SYSCFG_DL_SYSCTL_init(void);
 void SYSCFG_DL_TB6612_PWM_init(void);
 void SYSCFG_DL_UART_0_init(void);
 
+void SYSCFG_DL_SYSTICK_init(void);
 
 bool SYSCFG_DL_saveConfiguration(void);
 bool SYSCFG_DL_restoreConfiguration(void);

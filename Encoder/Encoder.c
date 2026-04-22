@@ -18,7 +18,7 @@ float Motor1_Speed = 0;  // 左轮速度 cm/s
 float Motor2_Speed = 0;  // 右轮速度 cm/s
 
 // 左轮编码器中断处理（A相 / B相）
-void GROUP1_IRQHandler(void)
+void GPIOB_IRQHandler(void)
 {
     if (DL_Interrupt_getStatusGroup(DL_INTERRUPT_GROUP_1, DL_INTERRUPT_GROUP1_GPIOB))
     {
