@@ -27,7 +27,6 @@ int main(void)
 //encoder 采样 ms 窗口内的脉冲数
         if (now - last_measure >= 200) {
             MEASURE_MOTORS_SPEED();
-            SetSpeed(2, 2);  //设置速度
             last_measure = now;
         }
 
@@ -36,24 +35,23 @@ int main(void)
             last_uart = now;
         }
 
-        SetSpeed(2, 2);
-        // uint8_t s1 = !READ_HW_OUT_1;
-        // uint8_t s2 = !READ_HW_OUT_2;
-        // uint8_t s3 = !READ_HW_OUT_3;
-        // uint8_t s4 = !READ_HW_OUT_4;
+        uint8_t s1 = !READ_HW_OUT_1;
+        uint8_t s2 = !READ_HW_OUT_2;
+        uint8_t s3 = !READ_HW_OUT_3;
+        uint8_t s4 = !READ_HW_OUT_4;
 
-        // if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 1) {
-        //     SetSpeed(0, 0);
-        // } else if (s1 == 1 && s2 == 0 && s3 == 1 && s4 == 1) {
-        //     SetSpeed(0.5, 2);
-        // } else if (s1 == 0 && s2 == 1 && s3 == 1 && s4 == 1) {
-        //     SetSpeed(0.5, 2.5);
-        // } else if (s1 == 1 && s2 == 1 && s3 == 0 && s4 == 1) {
-        //     SetSpeed(2, 0.5);
-        // } else if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 0) {
-        //     SetSpeed(2.5, 0.5);
-        // } else {
-        //     SetSpeed(1, 1);
-        // }
+        if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 1) {
+            SetSpeed(0, 0);
+        } else if (s1 == 1 && s2 == 0 && s3 == 1 && s4 == 1) {
+            SetSpeed(0.5, 2);
+        } else if (s1 == 0 && s2 == 1 && s3 == 1 && s4 == 1) {
+            SetSpeed(0.5, 2.5);
+        } else if (s1 == 1 && s2 == 1 && s3 == 0 && s4 == 1) {
+            SetSpeed(2, 0.5);
+        } else if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 0) {
+            SetSpeed(2.5, 0.5);
+        } else {
+            SetSpeed(1, 1);
+        }
     }
 }
