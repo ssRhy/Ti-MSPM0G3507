@@ -1,11 +1,14 @@
 #include "ti_msp_dl_config.h"
 #include "graph.h"
 #include "Motor/motor.h"
+#include "Uart/uart.h" 
 
 int main(void)
 {
     /* 1. 初始化系统时钟和外设（必须最先调用） */
     SYSCFG_DL_init();
+
+    Uartinit();
   
 
     /* 2. 启动电机PWM定时器 */
@@ -15,14 +18,6 @@ int main(void)
     GRAPH_SENSOR_Init();
 
     while (1) {
-        /* 4. 控制电机（g_dir1/g_pwm1等变量需在motor.h中定义） */
-    //   if(READ_HW_OUT_4==1)
-    //   {
-    //      TT_Moto1(&g_dir1, &g_pwm1);
-    //    TT_Moto2(&g_dir2, &g_pwm2);
-
-    //   }
-      
 
         /* 5. 读取4路灰度传感器状态 */
         uint8_t s1 = !READ_HW_OUT_1;
@@ -67,6 +62,13 @@ int main(void)
         // {
         //     SetSpeed(1.5,1.5);
         // }
+                /* 4. 控制电机（g_dir1/g_pwm1等变量需在motor.h中定义） */
+    //   if(READ_HW_OUT_4==1)
+    //   {
+    //      TT_Moto1(&g_dir1, &g_pwm1);
+    //    TT_Moto2(&g_dir2, &g_pwm2);
+
+    //   }
     
 
     }

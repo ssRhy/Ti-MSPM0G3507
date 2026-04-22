@@ -98,6 +98,26 @@ extern "C" {
 
 
 
+/* Defines for UART_0 */
+#define UART_0_INST                                                        UART0
+#define UART_0_INST_FREQUENCY                                           32000000
+#define UART_0_INST_IRQHandler                                  UART0_IRQHandler
+#define UART_0_INST_INT_IRQN                                      UART0_INT_IRQn
+#define GPIO_UART_0_RX_PORT                                                GPIOA
+#define GPIO_UART_0_TX_PORT                                                GPIOA
+#define GPIO_UART_0_RX_PIN                                        DL_GPIO_PIN_11
+#define GPIO_UART_0_TX_PIN                                        DL_GPIO_PIN_10
+#define GPIO_UART_0_IOMUX_RX                                     (IOMUX_PINCM22)
+#define GPIO_UART_0_IOMUX_TX                                     (IOMUX_PINCM21)
+#define GPIO_UART_0_IOMUX_RX_FUNC                      IOMUX_PINCM22_PF_UART0_RX
+#define GPIO_UART_0_IOMUX_TX_FUNC                      IOMUX_PINCM21_PF_UART0_TX
+#define UART_0_BAUD_RATE                                                  (9600)
+#define UART_0_IBRD_32_MHZ_9600_BAUD                                       (208)
+#define UART_0_FBRD_32_MHZ_9600_BAUD                                        (21)
+
+
+
+
 
 /* Port definition for Pin Group TB6612_IO */
 #define TB6612_IO_PORT                                                   (GPIOB)
@@ -129,6 +149,28 @@ extern "C" {
 /* Defines for HW_OUT_4: GPIOA.15 with pinCMx 37 on package pin 8 */
 #define GRAPH_SENSOR_HW_OUT_4_PIN                               (DL_GPIO_PIN_15)
 #define GRAPH_SENSOR_HW_OUT_4_IOMUX                              (IOMUX_PINCM37)
+/* Port definition for Pin Group Encoder_PORT */
+#define Encoder_PORT_PORT                                                (GPIOB)
+
+/* Defines for Encoder_A_PIN: GPIOB.17 with pinCMx 43 on package pin 14 */
+// pins affected by this interrupt request:["Encoder_A_PIN","Encoder_B_PIN","Encoder_C_PIN","Encoder_D_PIN"]
+#define Encoder_PORT_INT_IRQN                                   (GPIOB_INT_IRQn)
+#define Encoder_PORT_INT_IIDX                   (DL_INTERRUPT_GROUP1_IIDX_GPIOB)
+#define Encoder_PORT_Encoder_A_PIN_IIDX                     (DL_GPIO_IIDX_DIO17)
+#define Encoder_PORT_Encoder_A_PIN_PIN                          (DL_GPIO_PIN_17)
+#define Encoder_PORT_Encoder_A_PIN_IOMUX                         (IOMUX_PINCM43)
+/* Defines for Encoder_B_PIN: GPIOB.18 with pinCMx 44 on package pin 15 */
+#define Encoder_PORT_Encoder_B_PIN_IIDX                     (DL_GPIO_IIDX_DIO18)
+#define Encoder_PORT_Encoder_B_PIN_PIN                          (DL_GPIO_PIN_18)
+#define Encoder_PORT_Encoder_B_PIN_IOMUX                         (IOMUX_PINCM44)
+/* Defines for Encoder_C_PIN: GPIOB.20 with pinCMx 48 on package pin 19 */
+#define Encoder_PORT_Encoder_C_PIN_IIDX                     (DL_GPIO_IIDX_DIO20)
+#define Encoder_PORT_Encoder_C_PIN_PIN                          (DL_GPIO_PIN_20)
+#define Encoder_PORT_Encoder_C_PIN_IOMUX                         (IOMUX_PINCM48)
+/* Defines for Encoder_D_PIN: GPIOB.19 with pinCMx 45 on package pin 16 */
+#define Encoder_PORT_Encoder_D_PIN_IIDX                     (DL_GPIO_IIDX_DIO19)
+#define Encoder_PORT_Encoder_D_PIN_PIN                          (DL_GPIO_PIN_19)
+#define Encoder_PORT_Encoder_D_PIN_IOMUX                         (IOMUX_PINCM45)
 
 
 /* clang-format on */
@@ -138,6 +180,7 @@ void SYSCFG_DL_initPower(void);
 void SYSCFG_DL_GPIO_init(void);
 void SYSCFG_DL_SYSCTL_init(void);
 void SYSCFG_DL_TB6612_PWM_init(void);
+void SYSCFG_DL_UART_0_init(void);
 
 
 bool SYSCFG_DL_saveConfiguration(void);

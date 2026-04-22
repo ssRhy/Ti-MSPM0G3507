@@ -4,6 +4,8 @@
 "./Encoder/Encoder.o"
 "./GRAPH/graph.o"
 "./Motor/motor.o"
+"./PID/pid.o"
+"./Uart/uart.o"
 -l"./device_linker.cmd"
 -ldevice.cmd.genlibs
 -llibc.a
