@@ -1,133 +1,87 @@
 /*
  * Encoder.c — 双电机（左右轮）正交编码器速度测量
  *
- * 使用方法：
- * 1. 在 ti_msp_dl_config.h 中定义 Encoder_PORT 和 Encoder_A_PIN ~ Encoder_D_PIN
- * 2. 在 main() 中调用 NVIC_EnableIRQ(GPIOB_INT_IRQn) 使能编码器中断（中断组根据实际GPIO端口）
- * 3. 定时调用 MEASURE_MOTORS_SPEED()， Motor1_Speed 为左轮速度，Motor2_Speed 为右轮速度
+ * MSPM0G3507: GPIOB 中断经 GROUP1 分组路由
+ * 所有 GPIO 端口的中断合并到 GROUP0 / GROUP1，入口是 GROUP1_IRQHandler
  *
- * 速度单位为 cm/s（需根据实际轮子半径修改 Encoder.h 中的 RR 参数）
+ * 使用方法：
+ * 1. 在 ti_msp_dl_config.h 中定义 Encoder_PORT 和各相引脚宏
+ * 2. 在 main() 中调用 NVIC_EnableIRQ(GROUP1_INT_IRQn) 使能 GROUP1 中断
+ * 3. 定时调用 MEASURE_MOTORS_SPEED()， Motor1_Speed 为左轮速度，Motor2_Speed 为右轮速度
  */
 
 #include "Encoder.h"
 
-int32_t Motor1_Encoder_Value = 0;  // 左轮编码器计数值
-int32_t Motor2_Encoder_Value = 0;  // 右轮编码器计数值
+int32_t Motor1_Encoder_Value = 0;
+int32_t Motor2_Encoder_Value = 0;
 
-float Motor1_Speed = 0;  // 左轮速度 cm/s
-float Motor2_Speed = 0;  // 右轮速度 cm/s
+float Motor1_Speed = 0;
+float Motor2_Speed = 0;
 
-// 左轮编码器中断处理（A相 / B相）
-void GPIOB_IRQHandler(void)
+void GROUP1_IRQHandler(void)
 {
     if (DL_Interrupt_getStatusGroup(DL_INTERRUPT_GROUP_1, DL_INTERRUPT_GROUP1_GPIOB))
     {
-        uint32_t Encoder_GPIO_Int =
-            DL_GPIO_getEnabledInterruptStatus(Encoder_PORT, Encoder_A_PIN | Encoder_B_PIN | Encoder_C_PIN | Encoder_D_PIN);
+        uint32_t stat = DL_GPIO_getEnabledInterruptStatus(
+            Encoder_PORT,
+            Encoder_A_PIN | Encoder_B_PIN | Encoder_C_PIN | Encoder_D_PIN);
 
-        // 左轮 A相
-        if ((Encoder_GPIO_Int & Encoder_A_PIN) == Encoder_A_PIN)
-        {
+        if (stat & Encoder_A_PIN) {
             DL_GPIO_clearInterruptStatus(Encoder_PORT, Encoder_A_PIN);
-            if (Read_Encoder_A == 1)
-            { // 上升沿
-                if (Read_Encoder_B == 0)
-                    Motor1_Encoder_Value++;
-                else if (Read_Encoder_B == 1)
-                    Motor1_Encoder_Value--;
-            }
-            else
-            { // 下降沿
-                if (Read_Encoder_B == 0)
-                    Motor1_Encoder_Value--;
-                else if (Read_Encoder_B == 1)
-                    Motor1_Encoder_Value++;
+            if (Read_Encoder_A == 1) {
+                Motor1_Encoder_Value += (Read_Encoder_B == 0) ? 1 : -1;
+            } else {
+                Motor1_Encoder_Value += (Read_Encoder_B == 0) ? -1 : 1;
             }
         }
 
-        // 左轮 B相
-        if ((Encoder_GPIO_Int & Encoder_B_PIN) == Encoder_B_PIN)
-        {
+        if (stat & Encoder_B_PIN) {
             DL_GPIO_clearInterruptStatus(Encoder_PORT, Encoder_B_PIN);
-            if (Read_Encoder_B == 1)
-            { // 上升沿
-                if (Read_Encoder_A == 0)
-                    Motor1_Encoder_Value--;
-                else if (Read_Encoder_A == 1)
-                    Motor1_Encoder_Value++;
-            }
-            else
-            { // 下降沿
-                if (Read_Encoder_A == 0)
-                    Motor1_Encoder_Value++;
-                else if (Read_Encoder_A == 1)
-                    Motor1_Encoder_Value--;
+            if (Read_Encoder_B == 1) {
+                Motor1_Encoder_Value += (Read_Encoder_A == 0) ? -1 : 1;
+            } else {
+                Motor1_Encoder_Value += (Read_Encoder_A == 0) ? 1 : -1;
             }
         }
 
-        // 右轮 A相
-        if ((Encoder_GPIO_Int & Encoder_C_PIN) == Encoder_C_PIN)
-        {
+        if (stat & Encoder_C_PIN) {
             DL_GPIO_clearInterruptStatus(Encoder_PORT, Encoder_C_PIN);
-            if (Read_Encoder_C == 1)
-            { // 上升沿
-                if (Read_Encoder_D == 0)
-                    Motor2_Encoder_Value++;
-                else if (Read_Encoder_D == 1)
-                    Motor2_Encoder_Value--;
-            }
-            else
-            { // 下降沿
-                if (Read_Encoder_D == 0)
-                    Motor2_Encoder_Value--;
-                else if (Read_Encoder_D == 1)
-                    Motor2_Encoder_Value++;
+            if (Read_Encoder_C == 1) {
+                Motor2_Encoder_Value += (Read_Encoder_D == 0) ? 1 : -1;
+            } else {
+                Motor2_Encoder_Value += (Read_Encoder_D == 0) ? -1 : 1;
             }
         }
 
-        // 右轮 B相
-        if ((Encoder_GPIO_Int & Encoder_D_PIN) == Encoder_D_PIN)
-        {
+        if (stat & Encoder_D_PIN) {
             DL_GPIO_clearInterruptStatus(Encoder_PORT, Encoder_D_PIN);
-            if (Read_Encoder_D == 1)
-            { // 上升沿
-                if (Read_Encoder_C == 0)
-                    Motor2_Encoder_Value--;
-                else if (Read_Encoder_C == 1)
-                    Motor2_Encoder_Value++;
-            }
-            else
-            { // 下降沿
-                if (Read_Encoder_C == 0)
-                    Motor2_Encoder_Value++;
-                else if (Read_Encoder_C == 1)
-                    Motor2_Encoder_Value--;
+            if (Read_Encoder_D == 1) {
+                Motor2_Encoder_Value += (Read_Encoder_C == 0) ? -1 : 1;
+            } else {
+                Motor2_Encoder_Value += (Read_Encoder_C == 0) ? 1 : -1;
             }
         }
     }
 }
 
-// 左轮速度计算
 void Motor1_Get_Speed(void)
 {
-    int32_t Encoder_TIM = Motor1_Encoder_Value;
+    int32_t val = Motor1_Encoder_Value;
     Motor1_Encoder_Value = 0;
-    Motor1_Speed = (float)Encoder_TIM / (CC)*PI * RR;
+    Motor1_Speed = (float)val / (CC)*PI * RR;
 }
 
-// 右轮速度计算
 void Motor2_Get_Speed(void)
 {
-    int32_t Encoder_TIM = Motor2_Encoder_Value;
+    int32_t val = Motor2_Encoder_Value;
     Motor2_Encoder_Value = 0;
-    Motor2_Speed = -(float)Encoder_TIM / (CC)*PI * RR;
+    Motor2_Speed = -(float)val / (CC)*PI * RR;
 }
 
-float Motor1_Lucheng = 0;  // 左轮累计路程 cm
-float Motor2_Lucheng = 0;  // 右轮累计路程 cm
+float Motor1_Lucheng = 0;
+float Motor2_Lucheng = 0;
 float Measure_Distance = 0;
 
-// 更新所有电机速度及累计路程
 void MEASURE_MOTORS_SPEED(void)
 {
     Motor1_Get_Speed();

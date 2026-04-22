@@ -116,7 +116,8 @@ SYSTICK.systickEnable     = true;
 SYSTICK.interruptPriority = "0";
 
 UART1.$name                    = "UART_0";
-UART1.enabledInterrupts        = ["RX", "TX"];
+UART1.enabledInterrupts        = ["RX","TX"];
+UART1.targetBaudRate           = 115200;
 UART1.peripheral.rxPin.$assign = "PA11";
 UART1.peripheral.txPin.$assign = "PA10";
 UART1.txPinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric2";

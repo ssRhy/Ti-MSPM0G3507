@@ -4,16 +4,27 @@
 #include "Uart/uart.h"
 #include "Encoder/Encoder.h"
 
-volatile uint32_t g_systick_count   = 0;
-volatile uint32_t g_uart_tx_ticks   = 0;
+volatile uint32_t g_systick_count  = 0;
+volatile uint32_t g_uart_tx_ticks  = 0;
 volatile uint32_t g_measure_ticks  = 0;
 
 void SysTick_Handler(void)
 {
     g_systick_count++;
-    if (g_uart_tx_ticks < 0xFFFFFFFF)  g_uart_tx_ticks++;
-    if (g_measure_ticks < 0xFFFFFFFF)  g_measure_ticks++;
+    g_uart_tx_ticks++;
+    g_measure_ticks++;
 }
+
+// static inline uint32_t atomic_take_and_clear(volatile uint32_t *p)
+// {
+//     uint32_t primask;
+//     __asm__ volatile ("mrs %0, primask" : "=r"(primask));
+//     __asm__ volatile ("cpsid i" ::: "memory");
+//     uint32_t v = *p;
+//     *p = 0;
+//     __asm__ volatile ("msr primask, %0" ::: "memory");
+//     return v;
+// }
 
 int main(void)
 {
@@ -33,21 +44,15 @@ int main(void)
     GRAPH_SENSOR_Init();
     uart0_send_string("[5] GRAPH done\r\n");
 
-    DL_GPIO_clearInterruptStatus(GPIOB, 0xFFFFFFFF);
-    NVIC_ClearPendingIRQ(GPIOB_INT_IRQn);
-    NVIC_EnableIRQ(GPIOB_INT_IRQn);
     uart0_send_string("[6] NVIC enabled\r\n");
-
     uart0_send_string("[7] SysTick started\r\n");
 
     while (1) {
-        if (g_measure_ticks >= 1) {
-            g_measure_ticks = 0;
-            MEASURE_MOTORS_SPEED();
-        }
+        // if (atomic_take_and_clear(&g_measure_ticks) > 0) {
+        //     MEASURE_MOTORS_SPEED();
+        // }
 
-        if (g_uart_tx_ticks >= 10) {
-            g_uart_tx_ticks = 0;
+        // if (atomic_take_and_clear(&g_uart_tx_ticks) >= 5) {
             uart0_send_string("TICK:");
             uart0_send_speed((float)g_systick_count);
             uart0_send_string(" M1:");
@@ -55,7 +60,7 @@ int main(void)
             uart0_send_string(" M2:");
             uart0_send_speed(Motor2_Speed);
             uart0_send_string("\r\n");
-        }
+        // }
 
         uint8_t s1 = !READ_HW_OUT_1;
         uint8_t s2 = !READ_HW_OUT_2;
