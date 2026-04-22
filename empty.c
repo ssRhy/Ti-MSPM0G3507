@@ -3,28 +3,10 @@
 #include "Motor/motor.h"
 #include "Uart/uart.h"
 #include "Encoder/Encoder.h"
+#include "clock/clock.h"
 
-volatile uint32_t g_systick_count  = 0;
 volatile uint32_t g_uart_tx_ticks  = 0;
 volatile uint32_t g_measure_ticks  = 0;
-
-void SysTick_Handler(void)
-{
-    g_systick_count++;
-    g_uart_tx_ticks++;
-    g_measure_ticks++;
-}
-
-// static inline uint32_t atomic_take_and_clear(volatile uint32_t *p)
-// {
-//     uint32_t primask;
-//     __asm__ volatile ("mrs %0, primask" : "=r"(primask));
-//     __asm__ volatile ("cpsid i" ::: "memory");
-//     uint32_t v = *p;
-//     *p = 0;
-//     __asm__ volatile ("msr primask, %0" ::: "memory");
-//     return v;
-// }
 
 int main(void)
 {
@@ -45,6 +27,7 @@ int main(void)
     uart0_send_string("[5] GRAPH done\r\n");
 
     uart0_send_string("[6] NVIC enabled\r\n");
+    SysTick_Init();
     uart0_send_string("[7] SysTick started\r\n");
 
     while (1) {
@@ -54,7 +37,7 @@ int main(void)
 
         // if (atomic_take_and_clear(&g_uart_tx_ticks) >= 5) {
             uart0_send_string("TICK:");
-            uart0_send_speed((float)g_systick_count);
+            uart0_send_speed((float)tick_ms);
             uart0_send_string(" M1:");
             uart0_send_speed(Motor1_Speed);
             uart0_send_string(" M2:");

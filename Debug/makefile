@@ -18,6 +18,7 @@ ORDERED_OBJS += \
 "./Motor/motor.o" \
 "./PID/pid.o" \
 "./Uart/uart.o" \
+"./clock/clock.o" \
 $(GEN_CMDS__FLAG) \
 -Wl,-ldevice.cmd.genlibs \
 -Wl,-llibc.a \
@@ -35,12 +36,14 @@ RMDIR := RMDIR /S/Q
 -include Motor/subdir_vars.mk
 -include PID/subdir_vars.mk
 -include Uart/subdir_vars.mk
+-include clock/subdir_vars.mk
 -include subdir_rules.mk
 -include Encoder/subdir_rules.mk
 -include GRAPH/subdir_rules.mk
 -include Motor/subdir_rules.mk
 -include PID/subdir_rules.mk
 -include Uart/subdir_rules.mk
+-include clock/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -151,8 +154,8 @@ M0G3507_TB6612_TT2.out: $(OBJS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "empty.o" "ti_msp_dl_config.o" "startup_mspm0g350x_ticlang.o" "Encoder\Encoder.o" "GRAPH\graph.o" "Motor\motor.o" "PID\pid.o" "Uart\uart.o" 
-	-$(RM) "empty.d" "ti_msp_dl_config.d" "startup_mspm0g350x_ticlang.d" "Encoder\Encoder.d" "GRAPH\graph.d" "Motor\motor.d" "PID\pid.d" "Uart\uart.d" 
+	-$(RM) "empty.o" "ti_msp_dl_config.o" "startup_mspm0g350x_ticlang.o" "Encoder\Encoder.o" "GRAPH\graph.o" "Motor\motor.o" "PID\pid.o" "Uart\uart.o" "clock\clock.o" 
+	-$(RM) "empty.d" "ti_msp_dl_config.d" "startup_mspm0g350x_ticlang.d" "Encoder\Encoder.d" "GRAPH\graph.d" "Motor\motor.d" "PID\pid.d" "Uart\uart.d" "clock\clock.d" 
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -9,7 +9,6 @@ void uart0_send_string(const char* str);
 void uart0_send_speed(float speed);
 
 
-
 volatile unsigned char uart_data = 0;
 
 void Uartinit(void)

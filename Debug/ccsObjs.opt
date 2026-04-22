@@ -6,6 +6,7 @@
 "./Motor/motor.o"
 "./PID/pid.o"
 "./Uart/uart.o"
+"./clock/clock.o"
 -l"./device_linker.cmd"
 -ldevice.cmd.genlibs
 -llibc.a
