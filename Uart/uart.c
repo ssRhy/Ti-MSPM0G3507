@@ -91,14 +91,25 @@ void uart0_send_float(float val)
     uart0_send_string(buf);
 }
 
-void uart0_send_vofa(void)
+void uart0_send_vofa_debug(void)
 {
-    // FireWater 格式: ch0,ch1,ch2\n
+    // 详细调试数据
+    uart0_send_string("tgt:");
+    uart0_send_float(pid_motor1.target);
+    uart0_send_char(',');
+    uart0_send_float(pid_motor2.target);
+    uart0_send_string(" enc:");
+    uart0_send_float(Motor1_Encoder_Value);
+    uart0_send_char(',');
+    uart0_send_float(Motor2_Encoder_Value);
+    uart0_send_string(" spd:");
     uart0_send_float(Motor1_Speed);
     uart0_send_char(',');
     uart0_send_float(Motor2_Speed);
+    uart0_send_string(" out:");
+    uart0_send_float(pid_motor1.output);
     uart0_send_char(',');
-    uart0_send_float(pid_motor1.output );
+    uart0_send_float(pid_motor2.output);
     uart0_send_char('\n');
 }
 

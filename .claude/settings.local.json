@@ -4,13 +4,8 @@
   },
   "permissions": {
     "allow": [
-      "Read(//D/Study/DianSai/M0_software_info/CCS Theia/ccs/theia/resources/ai/**)",
-      "mcp__ccs-debug",
-      "mcp__ccs-project",
-      "mcp__ccs-sysconfig"
+      "Read(//D/Study/DianSai/M0_software_info/CCS Theia/ccs/theia/resources/ai/**)"
     ],
-    "ask": [
-      "mcp__ccs-project__changeSysConfigVersion"
-    ]
+    "ask": []
   }
 }

@@ -20,6 +20,7 @@ ORDERED_OBJS += \
 "./Uart/fifo.o" \
 "./Uart/uart.o" \
 "./clock/clock.o" \
+"./clock/delay.o" \
 $(GEN_CMDS__FLAG) \
 -Wl,-ldevice.cmd.genlibs \
 -Wl,-llibc.a \
@@ -155,8 +156,8 @@ M0G3507_TB6612_TT2.out: $(OBJS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "empty.o" "ti_msp_dl_config.o" "startup_mspm0g350x_ticlang.o" "Encoder\Encoder.o" "GRAPH\graph.o" "Motor\motor.o" "PID\pid.o" "Uart\fifo.o" "Uart\uart.o" "clock\clock.o" 
-	-$(RM) "empty.d" "ti_msp_dl_config.d" "startup_mspm0g350x_ticlang.d" "Encoder\Encoder.d" "GRAPH\graph.d" "Motor\motor.d" "PID\pid.d" "Uart\fifo.d" "Uart\uart.d" "clock\clock.d" 
+	-$(RM) "empty.o" "ti_msp_dl_config.o" "startup_mspm0g350x_ticlang.o" "Encoder\Encoder.o" "GRAPH\graph.o" "Motor\motor.o" "PID\pid.o" "Uart\fifo.o" "Uart\uart.o" "clock\clock.o" "clock\delay.o" 
+	-$(RM) "empty.d" "ti_msp_dl_config.d" "startup_mspm0g350x_ticlang.d" "Encoder\Encoder.d" "GRAPH\graph.d" "Motor\motor.d" "PID\pid.d" "Uart\fifo.d" "Uart\uart.d" "clock\clock.d" "clock\delay.d" 
 	-@echo ' '
 
 .PHONY: all clean dependents

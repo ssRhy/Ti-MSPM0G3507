@@ -8,6 +8,7 @@
 "./Uart/fifo.o"
 "./Uart/uart.o"
 "./clock/clock.o"
+"./clock/delay.o"
 -l"./device_linker.cmd"
 -ldevice.cmd.genlibs
 -llibc.a

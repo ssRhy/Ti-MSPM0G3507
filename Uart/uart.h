@@ -8,5 +8,6 @@ void uart0_printf(const char* fmt, ...);
 void uart0_send_speed(float speed);
 void uart0_send_float(float val);
 void uart0_send_vofa(void);
+void uart0_send_vofa_debug(void);
 
 #endif

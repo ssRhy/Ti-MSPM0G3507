@@ -2,10 +2,10 @@
 #include "PID/pid.h"
 #include "Encoder/Encoder.h"
 
-uint8_t g_dir1 =DIR_BACKWARD;
+uint8_t g_dir1 =DIR_FORWARD;
 uint32_t g_pwm1 = 1600;
 
-uint8_t g_dir2 = DIR_BACKWARD;
+uint8_t g_dir2 = DIR_FORWARD;
 uint32_t g_pwm2 = 1600;
 
 PID_TypeDef pid_motor1;
@@ -77,8 +77,10 @@ void Motor_Init(void)
 {
     TT_Moto1(&g_dir1, &g_pwm1);
     TT_Moto2(&g_dir2, &g_pwm2);
-    PID_Init(&pid_motor1, 0.1, 0.01, 0.001, 100, -100, 100);
-    PID_Init(&pid_motor2, 0.1, 0.01, 0.001, 100, -100, 100);
+    PID_Init(&pid_motor1, 5, 0, 0, 100, 0, 100);
+    PID_Init(&pid_motor2, 5, 0, 0, 100, 0, 100);
+    PID_Clear(&pid_motor1);
+    PID_Clear(&pid_motor2);
 }
 
 void SetSpeed(float speed1, float speed2)

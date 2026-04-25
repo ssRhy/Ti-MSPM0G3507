@@ -20,7 +20,7 @@
 #define JIANSUBI     9.6      // 减速比（如 20:1 减速箱）
 #define BEIPIN       4       // 4倍频（软件四分频）
 #define CC           (ENCODE_13X * JIANSUBI * BEIPIN)  // 每转总脉冲数
-#define SAMPLE_TIME  0.01    // 速度采样周期，单位秒
+#define SAMPLE_TIME  0.2    // 速度采样周期，单位秒（与 main 中 200ms 调用间隔一致）
 
 #define PI  3.1415f
 #define RR  12.5f            // 轮子半径，单位 mm

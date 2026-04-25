@@ -20,21 +20,38 @@ int main(void)
     DL_TimerG_startCounter(TB6612_PWM_INST);//开启pwm电机
 
 
+    // while (1) {
+    //     // static uint32_t last_measure = 0;
+    //     // static uint32_t last_uart = 0;
+    //     // uint32_t now = tick_ms;
+
+    //     // if (now - last_measure >= 200) {
+    //     //     MEASURE_MOTORS_SPEED();
+    //     //     last_measure = now;
+    //     // }
+
+    //     // if (now - last_uart >= 500) {
+    //     //     uart0_send_vofa_debug();
+    //     //     last_uart = now;
+    //     // }
+
+    //     // // 测试：固定速度差，左轮1.0，右轮0.5
+    //     // SetSpeed(1.0, 0.5);
+    //     // 测试：直接设置固定PWM，不经过PID
+
+    // }
     while (1) {
         static uint32_t last_measure = 0;
-        static uint32_t last_uart = 0;
         uint32_t now = tick_ms;
-//encoder 采样 ms 窗口内的脉冲数
+        
         if (now - last_measure >= 200) {
             MEASURE_MOTORS_SPEED();
             last_measure = now;
         }
-
-        if (now - last_uart >= 500) {
-            uart0_send_vofa();
-            last_uart = now;
-        }
-
+        
+        // 调用PID，设置目标速度（mm/s）
+        // 循迹逻辑：左边传感器检测到黑线→左转，右边检测到→右转
+        // 原始值 × 60 = mm/s（假设原始最大值2.5对应150mm/s）
         uint8_t s1 = !READ_HW_OUT_1;
         uint8_t s2 = !READ_HW_OUT_2;
         uint8_t s3 = !READ_HW_OUT_3;
@@ -43,15 +60,15 @@ int main(void)
         if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 1) {
             SetSpeed(0, 0);
         } else if (s1 == 1 && s2 == 0 && s3 == 1 && s4 == 1) {
-            SetSpeed(0.5, 2);
+            SetSpeed(30, 120);   // 左转
         } else if (s1 == 0 && s2 == 1 && s3 == 1 && s4 == 1) {
-            SetSpeed(0.5, 2.5);
+            SetSpeed(30, 150);   // 大左转
         } else if (s1 == 1 && s2 == 1 && s3 == 0 && s4 == 1) {
-            SetSpeed(2, 0.5);
+            SetSpeed(120, 30);   // 右转
         } else if (s1 == 1 && s2 == 1 && s3 == 1 && s4 == 0) {
-            SetSpeed(2.5, 0.5);
+            SetSpeed(150, 30);   // 大右转
         } else {
-            SetSpeed(1, 1);
+            SetSpeed(60, 60);    // 直行
         }
     }
 }

@@ -68,14 +68,14 @@ void Motor1_Get_Speed(void)
 {
     int32_t val = Motor1_Encoder_Value;
     Motor1_Encoder_Value = 0;
-    Motor1_Speed = (float)val / (CC)*PI * RR;
+    Motor1_Speed = (float)val / (CC) * 2.0f * PI * RR / SAMPLE_TIME;
 }
 
 void Motor2_Get_Speed(void)
 {
     int32_t val = Motor2_Encoder_Value;
     Motor2_Encoder_Value = 0;
-    Motor2_Speed = -(float)val / (CC)*PI * RR;
+    Motor2_Speed = -(float)val / (CC) * 2.0f * PI * RR / SAMPLE_TIME;
 }
 
 float Motor1_Lucheng = 0;

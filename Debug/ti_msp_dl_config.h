@@ -134,21 +134,38 @@ extern "C" {
 /* Defines for BIN2: GPIOB.16 with pinCMx 33 on package pin 4 */
 #define TB6612_IO_BIN2_PIN                                      (DL_GPIO_PIN_16)
 #define TB6612_IO_BIN2_IOMUX                                     (IOMUX_PINCM33)
-/* Port definition for Pin Group GRAPH_SENSOR */
-#define GRAPH_SENSOR_PORT                                                (GPIOA)
-
 /* Defines for HW_OUT_1: GPIOA.8 with pinCMx 19 on package pin 54 */
+#define GRAPH_SENSOR_HW_OUT_1_PORT                                       (GPIOA)
 #define GRAPH_SENSOR_HW_OUT_1_PIN                                (DL_GPIO_PIN_8)
 #define GRAPH_SENSOR_HW_OUT_1_IOMUX                              (IOMUX_PINCM19)
-/* Defines for HW_OUT_2: GPIOA.18 with pinCMx 40 on package pin 11 */
-#define GRAPH_SENSOR_HW_OUT_2_PIN                               (DL_GPIO_PIN_18)
-#define GRAPH_SENSOR_HW_OUT_2_IOMUX                              (IOMUX_PINCM40)
+/* Defines for HW_OUT_2: GPIOA.25 with pinCMx 55 on package pin 26 */
+#define GRAPH_SENSOR_HW_OUT_2_PORT                                       (GPIOA)
+#define GRAPH_SENSOR_HW_OUT_2_PIN                               (DL_GPIO_PIN_25)
+#define GRAPH_SENSOR_HW_OUT_2_IOMUX                              (IOMUX_PINCM55)
 /* Defines for HW_OUT_3: GPIOA.27 with pinCMx 60 on package pin 31 */
+#define GRAPH_SENSOR_HW_OUT_3_PORT                                       (GPIOA)
 #define GRAPH_SENSOR_HW_OUT_3_PIN                               (DL_GPIO_PIN_27)
 #define GRAPH_SENSOR_HW_OUT_3_IOMUX                              (IOMUX_PINCM60)
-/* Defines for HW_OUT_4: GPIOA.15 with pinCMx 37 on package pin 8 */
-#define GRAPH_SENSOR_HW_OUT_4_PIN                               (DL_GPIO_PIN_15)
-#define GRAPH_SENSOR_HW_OUT_4_IOMUX                              (IOMUX_PINCM37)
+/* Defines for HW_OUT_4: GPIOA.26 with pinCMx 59 on package pin 30 */
+#define GRAPH_SENSOR_HW_OUT_4_PORT                                       (GPIOA)
+#define GRAPH_SENSOR_HW_OUT_4_PIN                               (DL_GPIO_PIN_26)
+#define GRAPH_SENSOR_HW_OUT_4_IOMUX                              (IOMUX_PINCM59)
+/* Defines for HW_OUT_5: GPIOB.3 with pinCMx 16 on package pin 51 */
+#define GRAPH_SENSOR_HW_OUT_5_PORT                                       (GPIOB)
+#define GRAPH_SENSOR_HW_OUT_5_PIN                                (DL_GPIO_PIN_3)
+#define GRAPH_SENSOR_HW_OUT_5_IOMUX                              (IOMUX_PINCM16)
+/* Defines for HW_OUT_6: GPIOB.2 with pinCMx 15 on package pin 50 */
+#define GRAPH_SENSOR_HW_OUT_6_PORT                                       (GPIOB)
+#define GRAPH_SENSOR_HW_OUT_6_PIN                                (DL_GPIO_PIN_2)
+#define GRAPH_SENSOR_HW_OUT_6_IOMUX                              (IOMUX_PINCM15)
+/* Defines for HW_OUT_7: GPIOB.9 with pinCMx 26 on package pin 61 */
+#define GRAPH_SENSOR_HW_OUT_7_PORT                                       (GPIOB)
+#define GRAPH_SENSOR_HW_OUT_7_PIN                                (DL_GPIO_PIN_9)
+#define GRAPH_SENSOR_HW_OUT_7_IOMUX                              (IOMUX_PINCM26)
+/* Defines for HW_OUT_8: GPIOB.24 with pinCMx 52 on package pin 23 */
+#define GRAPH_SENSOR_HW_OUT_8_PORT                                       (GPIOB)
+#define GRAPH_SENSOR_HW_OUT_8_PIN                               (DL_GPIO_PIN_24)
+#define GRAPH_SENSOR_HW_OUT_8_IOMUX                              (IOMUX_PINCM52)
 /* Port definition for Pin Group Encoder_PORT */
 #define Encoder_PORT_PORT                                                (GPIOB)
 

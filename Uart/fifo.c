@@ -134,4 +134,5 @@ uint16_t fifo_queueLength(uint8_t add)
 			return (FIFO_SIZE - rxFIFO_u.ptrRead + rxFIFO_u.ptrWrite);
 		}
 	}
+	return 0;
 }
