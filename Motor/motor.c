@@ -79,8 +79,8 @@ void Motor_Init(void)
     TT_Moto2(&g_dir2, &g_pwm2);
     // 参考项目：用增量式PID，仅P控制
     // Kp=5表示：误差1个脉冲时，PWM增加5（最大100）
-    PID_Init(&pid_motor1, 1, 0, 0.005, 100, 0, 0);
-    PID_Init(&pid_motor2, 1, 0, 0.005, 100, 0, 0);
+    PID_Init(&pid_motor1,1, 0, 0.01, 100, -100, 100);
+    PID_Init(&pid_motor2, 1, 0, 0.01, 100, -100, 100);
     PID_Clear(&pid_motor1);
     PID_Clear(&pid_motor2);
 }
