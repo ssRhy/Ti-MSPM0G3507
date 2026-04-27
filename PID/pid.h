@@ -10,6 +10,7 @@ typedef struct
     float actual;           // 实际值
     float err;              // 当前误差
     float err_last;         // 上一次误差
+    float err_last_last;    // 上上次误差（用于增量式PID的Kd项）
     float Kp, Ki, Kd;       // PID 参数
     float integral;         // 误差积分
     float output;           // 最终输出值

@@ -33,6 +33,8 @@
 
 extern int32_t Motor1_Encoder_Value;
 extern int32_t Motor2_Encoder_Value;
+extern int32_t Motor1_Encoder_Delta;  // 每200ms的脉冲增量
+extern int32_t Motor2_Encoder_Delta;
 extern float Motor1_Speed;
 extern float Motor2_Speed;
 extern float Measure_Distance;

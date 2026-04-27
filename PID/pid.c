@@ -20,8 +20,9 @@ void PID_Clear(PID_TypeDef *pid)
     pid->actual = 0;
     pid->err = 0;
     pid->err_last = 0;
-    pid->integral = 0; // 清除位置式 PID 的积分累加
-    pid->output = 0;   // 清除增量式 PID 的当前输出（因为增量式是基于此值累加的）
+    pid->err_last_last = 0;
+    pid->integral = 0;
+    pid->output = 0;
 }
 
 /**
@@ -55,22 +56,26 @@ float PID_Calc_Positional(PID_TypeDef *pid, float actual)
 
 /**
  * @brief 增量式 PID 计算
+ * Δu = Kp*(e[k]-e[k-1]) + Ki*e[k] + Kd*(e[k]-2*e[k-1]+e[k-2])
  */
 float PID_Calc_Incremental(PID_TypeDef *pid, float actual)
 {
     pid->actual = actual;
     float err = pid->target - actual;
-    
-    float delta_output = pid->Kp * (err - pid->err_last) + 
-                         pid->Ki * err;
-                         
+
+    float delta_output = pid->Kp * (err - pid->err_last)
+                       + pid->Ki * err
+                       + pid->Kd * (err - 2 * pid->err_last + pid->err_last_last);
+
     pid->output += delta_output;
+
+    pid->err_last_last = pid->err_last;
     pid->err_last = err;
-    
+
     // 输出限幅
     if (pid->output > pid->out_max) pid->output = pid->out_max;
     if (pid->output < pid->out_min) pid->output = pid->out_min;
-    
+
     return pid->output;
 }
 

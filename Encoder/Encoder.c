@@ -7,7 +7,8 @@
  * 使用方法：
  * 1. 在 ti_msp_dl_config.h 中定义 Encoder_PORT 和各相引脚宏
  * 2. 在 main() 中调用 NVIC_EnableIRQ(GROUP1_INT_IRQn) 使能 GROUP1 中断
- * 3. 定时调用 MEASURE_MOTORS_SPEED()， Motor1_Speed 为左轮速度，Motor2_Speed 为右轮速度
+ * 3. Motor1_Encoder_Value / Motor2_Encoder_Value 为累计编码器脉冲数（持续累加，不清零）
+ * 4. 定时调用 MEASURE_MOTORS_SPEED() 计算 Motor1_Speed / Motor2_Speed（m/s）
  */
 
 #include "Encoder.h"
@@ -15,8 +16,15 @@
 int32_t Motor1_Encoder_Value = 0;
 int32_t Motor2_Encoder_Value = 0;
 
+static int32_t Motor1_Encoder_Last = 0;
+static int32_t Motor2_Encoder_Last = 0;
+
 float Motor1_Speed = 0;
 float Motor2_Speed = 0;
+
+// 每200ms的新增脉冲数（用于PID控制）
+int32_t Motor1_Encoder_Delta = 0;
+int32_t Motor2_Encoder_Delta = 0;
 
 void GROUP1_IRQHandler(void)
 {
@@ -66,16 +74,16 @@ void GROUP1_IRQHandler(void)
 
 void Motor1_Get_Speed(void)
 {
-    int32_t val = Motor1_Encoder_Value;
-    Motor1_Encoder_Value = 0;
-    Motor1_Speed = (float)val / (CC) * 2.0f * PI * RR / SAMPLE_TIME;
+    int32_t delta = Motor1_Encoder_Value - Motor1_Encoder_Last;
+    Motor1_Encoder_Last = Motor1_Encoder_Value;
+    Motor1_Speed = (float)delta / (CC) * 2.0f * PI * RR / SAMPLE_TIME;
 }
 
 void Motor2_Get_Speed(void)
 {
-    int32_t val = Motor2_Encoder_Value;
-    Motor2_Encoder_Value = 0;
-    Motor2_Speed = -(float)val / (CC) * 2.0f * PI * RR / SAMPLE_TIME;
+    int32_t delta = Motor2_Encoder_Value - Motor2_Encoder_Last;
+    Motor2_Encoder_Last = Motor2_Encoder_Value;
+    Motor2_Speed = -(float)delta / (CC) * 2.0f * PI * RR / SAMPLE_TIME;
 }
 
 float Motor1_Lucheng = 0;
@@ -84,8 +92,15 @@ float Measure_Distance = 0;
 
 void MEASURE_MOTORS_SPEED(void)
 {
-    Motor1_Get_Speed();
-    Motor2_Get_Speed();
+    // 计算每200ms的脉冲增量（用于PID控制）
+    Motor1_Encoder_Delta = Motor1_Encoder_Value - Motor1_Encoder_Last;
+    Motor2_Encoder_Delta = Motor2_Encoder_Value - Motor2_Encoder_Last;
+    Motor1_Encoder_Last = Motor1_Encoder_Value;
+    Motor2_Encoder_Last = Motor2_Encoder_Value;
+
+    // 计算速度（m/s）
+    Motor1_Speed = (float)Motor1_Encoder_Delta / (CC) * 2.0f * PI * RR / SAMPLE_TIME;
+    Motor2_Speed = -(float)Motor2_Encoder_Delta / (CC) * 2.0f * PI * RR / SAMPLE_TIME;
 
     Motor1_Lucheng += Motor1_Speed * SAMPLE_TIME;
     Motor2_Lucheng += Motor2_Speed * SAMPLE_TIME;

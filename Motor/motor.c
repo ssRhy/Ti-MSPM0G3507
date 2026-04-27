@@ -3,10 +3,10 @@
 #include "Encoder/Encoder.h"
 
 uint8_t g_dir1 =DIR_FORWARD;
-uint32_t g_pwm1 = 1600;
+uint32_t g_pwm1 = 400;
 
 uint8_t g_dir2 = DIR_FORWARD;
-uint32_t g_pwm2 = 1600;
+uint32_t g_pwm2 = 400;
 
 PID_TypeDef pid_motor1;
 PID_TypeDef pid_motor2;
@@ -77,27 +77,48 @@ void Motor_Init(void)
 {
     TT_Moto1(&g_dir1, &g_pwm1);
     TT_Moto2(&g_dir2, &g_pwm2);
-    PID_Init(&pid_motor1, 5, 0, 0, 100, 0, 100);
-    PID_Init(&pid_motor2, 5, 0, 0, 100, 0, 100);
+    // 参考项目：用增量式PID，仅P控制
+    // Kp=5表示：误差1个脉冲时，PWM增加5（最大100）
+    PID_Init(&pid_motor1, 1, 0, 0.005, 100, 0, 0);
+    PID_Init(&pid_motor2, 1, 0, 0.005, 100, 0, 0);
     PID_Clear(&pid_motor1);
     PID_Clear(&pid_motor2);
 }
 
 void SetSpeed(float speed1, float speed2)
 {
+    // speed1: 左轮目标脉冲数/200ms
+    // speed2: 右轮目标脉冲数/200ms
 
     pid_motor1.target = speed1;
     pid_motor2.target = speed2;
-    PID_Calc_Incremental(&pid_motor1, Motor1_Speed);//编码器获得真实速度
-    PID_Calc_Incremental(&pid_motor2, Motor2_Speed);
 
-        // 3. PID 输出范围是 0~100，映射到 PWM 0~3200
-        g_pwm1 = (uint32_t)(pid_motor1.output / 100.0f * MAX_PWM);
-        g_pwm2 = (uint32_t)(pid_motor2.output / 100.0f * MAX_PWM);
+    // 用每200ms的脉冲增量作为实际值
+    float actual1 = (float)Motor1_Encoder_Delta;
+    float actual2 = (float)Motor2_Encoder_Delta;
 
-        TT_Moto1(&g_dir1, &g_pwm1);
-        TT_Moto2(&g_dir2, &g_pwm2);
+    PID_Calc_Incremental(&pid_motor1, actual1);
+    PID_Calc_Incremental(&pid_motor2, actual2);
 
+    // 根据输出符号决定方向和PWM
+    if (pid_motor1.output >= 0) {
+        g_dir1 = DIR_FORWARD;
+        g_pwm1 = (uint32_t)pid_motor1.output * 32;  // 0~100 -> 0~3200
+    } else {
+        g_dir1 = DIR_BACKWARD;
+        g_pwm1 = (uint32_t)(-pid_motor1.output) * 32;
+    }
+
+    if (pid_motor2.output >= 0) {
+        g_dir2 = DIR_FORWARD;
+        g_pwm2 = (uint32_t)pid_motor2.output * 32;
+    } else {
+        g_dir2 = DIR_BACKWARD;
+        g_pwm2 = (uint32_t)(-pid_motor2.output) * 32;
+    }
+
+    TT_Moto1(&g_dir1, &g_pwm1);
+    TT_Moto2(&g_dir2, &g_pwm2);
 } 
 
 
