@@ -51,6 +51,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     /* Module-Specific Initializations*/
     SYSCFG_DL_SYSCTL_init();
     SYSCFG_DL_TB6612_PWM_init();
+    SYSCFG_DL_I2C_MPU6050_init();
     SYSCFG_DL_UART_0_init();
     SYSCFG_DL_SYSTICK_init();
 }
@@ -62,12 +63,14 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_GPIO_reset(GPIOA);
     DL_GPIO_reset(GPIOB);
     DL_TimerG_reset(TB6612_PWM_INST);
+    DL_I2C_reset(I2C_MPU6050_INST);
     DL_UART_Main_reset(UART_0_INST);
 
 
     DL_GPIO_enablePower(GPIOA);
     DL_GPIO_enablePower(GPIOB);
     DL_TimerG_enablePower(TB6612_PWM_INST);
+    DL_I2C_enablePower(I2C_MPU6050_INST);
     DL_UART_Main_enablePower(UART_0_INST);
 
     delay_cycles(POWER_STARTUP_DELAY);
@@ -81,10 +84,25 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initPeripheralOutputFunction(GPIO_TB6612_PWM_C1_IOMUX,GPIO_TB6612_PWM_C1_IOMUX_FUNC);
     DL_GPIO_enableOutput(GPIO_TB6612_PWM_C1_PORT, GPIO_TB6612_PWM_C1_PIN);
 
+    DL_GPIO_initPeripheralInputFunctionFeatures(GPIO_I2C_MPU6050_IOMUX_SDA,
+        GPIO_I2C_MPU6050_IOMUX_SDA_FUNC, DL_GPIO_INVERSION_DISABLE,
+        DL_GPIO_RESISTOR_NONE, DL_GPIO_HYSTERESIS_DISABLE,
+        DL_GPIO_WAKEUP_DISABLE);
+    DL_GPIO_initPeripheralInputFunctionFeatures(GPIO_I2C_MPU6050_IOMUX_SCL,
+        GPIO_I2C_MPU6050_IOMUX_SCL_FUNC, DL_GPIO_INVERSION_DISABLE,
+        DL_GPIO_RESISTOR_NONE, DL_GPIO_HYSTERESIS_DISABLE,
+        DL_GPIO_WAKEUP_DISABLE);
+    DL_GPIO_enableHiZ(GPIO_I2C_MPU6050_IOMUX_SDA);
+    DL_GPIO_enableHiZ(GPIO_I2C_MPU6050_IOMUX_SCL);
+
     DL_GPIO_initPeripheralOutputFunction(
         GPIO_UART_0_IOMUX_TX, GPIO_UART_0_IOMUX_TX_FUNC);
     DL_GPIO_initPeripheralInputFunction(
         GPIO_UART_0_IOMUX_RX, GPIO_UART_0_IOMUX_RX_FUNC);
+
+    DL_GPIO_initDigitalInputFeatures(GPIO_MPU6050_MPU6050_INT_IOMUX,
+		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
+		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
     DL_GPIO_initDigitalOutput(TB6612_IO_AIN1_IOMUX);
 
@@ -150,15 +168,18 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		TB6612_IO_AIN2_PIN |
 		TB6612_IO_BIN1_PIN |
 		TB6612_IO_BIN2_PIN);
+    DL_GPIO_setLowerPinsPolarity(GPIOB, DL_GPIO_PIN_0_EDGE_RISE);
     DL_GPIO_setUpperPinsPolarity(GPIOB, DL_GPIO_PIN_17_EDGE_RISE_FALL |
 		DL_GPIO_PIN_18_EDGE_RISE_FALL |
 		DL_GPIO_PIN_20_EDGE_RISE_FALL |
 		DL_GPIO_PIN_19_EDGE_RISE_FALL);
-    DL_GPIO_clearInterruptStatus(GPIOB, Encoder_PORT_Encoder_A_PIN_PIN |
+    DL_GPIO_clearInterruptStatus(GPIOB, GPIO_MPU6050_MPU6050_INT_PIN |
+		Encoder_PORT_Encoder_A_PIN_PIN |
 		Encoder_PORT_Encoder_B_PIN_PIN |
 		Encoder_PORT_Encoder_C_PIN_PIN |
 		Encoder_PORT_Encoder_D_PIN_PIN);
-    DL_GPIO_enableInterrupt(GPIOB, Encoder_PORT_Encoder_A_PIN_PIN |
+    DL_GPIO_enableInterrupt(GPIOB, GPIO_MPU6050_MPU6050_INT_PIN |
+		Encoder_PORT_Encoder_A_PIN_PIN |
 		Encoder_PORT_Encoder_B_PIN_PIN |
 		Encoder_PORT_Encoder_C_PIN_PIN |
 		Encoder_PORT_Encoder_D_PIN_PIN);
@@ -231,6 +252,34 @@ SYSCONFIG_WEAK void SYSCFG_DL_TB6612_PWM_init(void) {
 
 }
 
+
+static const DL_I2C_ClockConfig gI2C_MPU6050ClockConfig = {
+    .clockSel = DL_I2C_CLOCK_BUSCLK,
+    .divideRatio = DL_I2C_CLOCK_DIVIDE_1,
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_I2C_MPU6050_init(void) {
+
+    DL_I2C_setClockConfig(I2C_MPU6050_INST,
+        (DL_I2C_ClockConfig *) &gI2C_MPU6050ClockConfig);
+    DL_I2C_setAnalogGlitchFilterPulseWidth(I2C_MPU6050_INST,
+        DL_I2C_ANALOG_GLITCH_FILTER_WIDTH_50NS);
+    DL_I2C_enableAnalogGlitchFilter(I2C_MPU6050_INST);
+
+    /* Configure Controller Mode */
+    DL_I2C_resetControllerTransfer(I2C_MPU6050_INST);
+    /* Set frequency to 400000 Hz*/
+    DL_I2C_setTimerPeriod(I2C_MPU6050_INST, 7);
+    DL_I2C_setControllerTXFIFOThreshold(I2C_MPU6050_INST, DL_I2C_TX_FIFO_LEVEL_EMPTY);
+    DL_I2C_setControllerRXFIFOThreshold(I2C_MPU6050_INST, DL_I2C_RX_FIFO_LEVEL_BYTES_1);
+    DL_I2C_enableControllerClockStretching(I2C_MPU6050_INST);
+
+
+    /* Enable module */
+    DL_I2C_enableController(I2C_MPU6050_INST);
+
+
+}
 
 static const DL_UART_Main_ClockConfig gUART_0ClockConfig = {
     .clockSel    = DL_UART_MAIN_CLOCK_BUSCLK,

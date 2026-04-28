@@ -24,4 +24,17 @@ float PID_Calc_Positional(PID_TypeDef *pid, float actual);
 float PID_Calc_Incremental(PID_TypeDef *pid, float actual);
 void PID_Clear(PID_TypeDef *pid);
 
+// ============ 出弯修正相关 ============
+// 出弯修正状态
+typedef enum {
+    CURVE_STATE_STRAIGHT,   // 直道
+    CURVE_STATE_IN_CURVE,   // 弯道中
+    CURVE_STATE_EXITING     // 出弯修正中
+} Curve_State_TypeDef;
+
+void Curve_Tracker_Update(uint8_t s1, uint8_t s8, uint8_t s4, uint8_t s5, uint32_t current_time);
+float Curve_Tracker_Get_Correction(void);
+uint8_t Curve_Tracker_Is_Exiting(void);
+void Curve_Tracker_Reset(void);
+
 #endif

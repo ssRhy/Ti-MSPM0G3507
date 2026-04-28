@@ -11,6 +11,9 @@ uint32_t g_pwm2 = 400;
 PID_TypeDef pid_motor1;
 PID_TypeDef pid_motor2;
 
+extern uint32_t get_system_time_ms(void);
+extern float yaw;  // MPU6050 yaw角
+
 
 /*******************************************************************************
 * 函数名 : TT_Moto1
@@ -77,12 +80,13 @@ void Motor_Init(void)
 {
     TT_Moto1(&g_dir1, &g_pwm1);
     TT_Moto2(&g_dir2, &g_pwm2);
-    // 参考项目：用增量式PID，仅P控制
-    // Kp=5表示：误差1个脉冲时，PWM增加5（最大100）
-    PID_Init(&pid_motor1,1, 0, 0.01, 100, -100, 100);
-    PID_Init(&pid_motor2, 1, 0, 0.01, 100, -100, 100);
+    PID_Init(&pid_motor1,1, 0, 0.001, 100, -100, 100);
+    PID_Init(&pid_motor2, 1, 0, 0.001, 100, -100, 100);
     PID_Clear(&pid_motor1);
     PID_Clear(&pid_motor2);
+
+    // 弯道修正初始化
+    Curve_Tracker_Reset();
 }
 
 void SetSpeed(float speed1, float speed2)
@@ -90,20 +94,25 @@ void SetSpeed(float speed1, float speed2)
     // speed1: 左轮目标脉冲数/200ms
     // speed2: 右轮目标脉冲数/200ms
 
-    pid_motor1.target = speed1;
-    pid_motor2.target = speed2;
+    // 获取出弯修正量
+    float yaw_correction = Curve_Tracker_Get_Correction();
 
-    // 用每200ms的脉冲增量作为实际值
+    // 应用弯道修正：正值 = 向右修正（左轮减，右轮加）
+    float left_speed = speed1 - yaw_correction;
+    float right_speed = speed2 + yaw_correction;
+
+    pid_motor1.target = left_speed;
+    pid_motor2.target = right_speed;
+
     float actual1 = (float)Motor1_Encoder_Delta;
     float actual2 = (float)Motor2_Encoder_Delta;
 
     PID_Calc_Incremental(&pid_motor1, actual1);
     PID_Calc_Incremental(&pid_motor2, actual2);
 
-    // 根据输出符号决定方向和PWM
     if (pid_motor1.output >= 0) {
         g_dir1 = DIR_FORWARD;
-        g_pwm1 = (uint32_t)pid_motor1.output * 32;  // 0~100 -> 0~3200
+        g_pwm1 = (uint32_t)pid_motor1.output * 32;
     } else {
         g_dir1 = DIR_BACKWARD;
         g_pwm1 = (uint32_t)(-pid_motor1.output) * 32;
@@ -119,7 +128,7 @@ void SetSpeed(float speed1, float speed2)
 
     TT_Moto1(&g_dir1, &g_pwm1);
     TT_Moto2(&g_dir2, &g_pwm2);
-} 
+}
 
 
 

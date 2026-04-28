@@ -19,6 +19,7 @@ extern uint8_t g_dir2;
 extern uint32_t g_pwm2;
 extern PID_TypeDef pid_motor1;
 extern PID_TypeDef pid_motor2;
+extern PID_TypeDef pid_yaw;  // 偏航角 PID，用于出弯直行修正
 
 void TT_Moto1(uint8_t *dir, uint32_t *pwm);
 void TT_Moto2(uint8_t *dir, uint32_t *pwm);

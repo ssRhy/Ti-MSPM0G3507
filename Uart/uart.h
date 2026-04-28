@@ -9,5 +9,6 @@ void uart0_send_speed(float speed);
 void uart0_send_float(float val);
 void uart0_send_vofa(void);
 void uart0_send_vofa_debug(void);
+void uart0_send_speed_debug(void);
 
 #endif

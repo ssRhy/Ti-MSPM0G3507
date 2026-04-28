@@ -113,6 +113,20 @@ void uart0_send_vofa_debug(void)
     uart0_send_char('\n');
 }
 
+void uart0_send_speed_debug(void)
+{
+    // 实时速度打印：左轮速度，右轮速度
+    uart0_send_string("L:");
+    uart0_send_float(Motor1_Speed);
+    uart0_send_string(" R:");
+    uart0_send_float(Motor2_Speed);
+    uart0_send_string(" pwm:");
+    uart0_send_float((float)g_pwm1 / 32.0f);
+    uart0_send_char(',');
+    uart0_send_float((float)g_pwm2 / 32.0f);
+    uart0_send_char('\n');
+}
+
 void UART0_IRQHandler(void)
 {
     switch (DL_UART_getPendingInterrupt(UART_0_INST)) {

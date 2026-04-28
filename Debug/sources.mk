@@ -121,6 +121,7 @@ SUBDIRS := \
 . \
 Encoder \
 GRAPH \
+MPU6050 \
 Motor \
 PID \
 Uart \
